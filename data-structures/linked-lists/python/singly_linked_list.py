@@ -1,5 +1,6 @@
 from typing import Iterator
 
+
 class Node:
     def __init__(self, val: int = 0, next: "Node | None" = None):
         self.val: int = val
@@ -17,7 +18,7 @@ class SinglyLinkedList:
 
     def __iter__(self) -> Iterator[int]:
         current = self.head
-        
+
         while current is not None:
             yield current.val
             current = current.next
@@ -28,56 +29,56 @@ class SinglyLinkedList:
 
     def append(self, val: int) -> None:
         node = Node(val)
-        
+
         if self.head is None:
             self.head = self.tail = node
         else:
             if self.tail is not None:
                 self.tail.next = node
-                
+
             self.tail = node
-            
+
         self._size += 1
 
     def prepend(self, val: int) -> None:
         node = Node(val)
-        
+
         if self.head is None:
             self.head = self.tail = node
         else:
             node.next = self.head
             self.head = node
-            
+
         self._size += 1
 
     def delete(self, val: int) -> None:
         current, prev = self.head, None
-        
+
         while current is not None:
             if current.val == val:
                 if prev is None:
                     self.head = current.next
                 else:
                     prev.next = current.next
-                    
+
                 if current.next is None:
                     self.tail = prev
-                    
+
                 self._size -= 1
                 break
-                
+
             prev = current
             current = current.next
 
     def search(self, val: int) -> int:
         current = self.head
         idx: int = 0
-        
+
         while current is not None:
             if current.val == val:
                 return idx
-                
+
             current = current.next
             idx += 1
-            
+
         return -1

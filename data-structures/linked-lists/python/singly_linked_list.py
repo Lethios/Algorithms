@@ -21,7 +21,8 @@ class SinglyLinkedList:
             current = current.next
 
     def __repr__(self) -> str:
-        return " -> ".join(str(val) for val in self) + " -> None"
+        nodes = " <-> ".join(str(val) for val in self)
+        return (nodes if nodes else "empty") + " -> None"
 
     def append(self, val: int) -> None:
         node = Node(val)

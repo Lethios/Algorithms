@@ -23,5 +23,14 @@ def dijkstra(graph: list[list[tuple[int, int]]], source: int) -> list[int]:
     return dist
 
 
+if __name__ == "__main__":
+    graph: list[list[tuple[int, int]]] = [
+        [(1, 4), (2, 1)],
+        [(3, 1)],
+        [(1, 2), (3, 5)],
+        [(4, 3)],
+        [(5, 1)],
+        [],
+    ]
 
-
+    print(dijkstra(graph, 0))

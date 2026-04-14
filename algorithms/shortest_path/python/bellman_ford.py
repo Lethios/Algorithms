@@ -1,10 +1,10 @@
 def bellman_ford(graph: list[list[tuple[int, int]]], source: int) -> list[int]:
     n: int = len(graph)
-    dist: list[int] = [10**18 for _ in range(n)]
+    dist: list[int] = [10**18] * n
 
     dist[source] = 0
 
-    for i in range(n):
+    for i in range(n - 1):
         is_updated: bool = False
 
         for curr_node, neighbors in enumerate(graph):
@@ -16,8 +16,10 @@ def bellman_ford(graph: list[list[tuple[int, int]]], source: int) -> list[int]:
         if not is_updated:
             break
 
-        if i == n - 1 and is_updated:
-            raise ValueError
+    for curr_node, neighbors in enumerate(graph):
+        for neighbor, weight in neighbors:
+            if dist[curr_node] + weight < dist[neighbor]:
+                raise ValueError()
 
     return dist
 

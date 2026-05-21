@@ -127,6 +127,55 @@ class AVLTree:
 
         return node
 
+    def _delete_node(self, val: int, node: Node | None) -> Node | None:
+        if node is None:
+            raise ValueError
+
+        if val < node.val:
+            if node.left is not None:
+                node.left = self._delete_node(val, node.left)
+        elif val > node.val:
+            if node.right is not None:
+                node.right = self._delete_node(val, node.right)
+        else:
+            if node.left is None and node.right is None:
+                return None
+
+            elif node.left is None:
+                return node.right
+
+            elif node.right is None:
+                return node.left
+
+            else:
+                successor = self.min(node.right)
+                node.val = successor
+                node.right = self._delete_node(successor, node.right)
+
+        node.height = 1 + max(self._get_height(node.left), self._get_height(node.right))
+
+        bal: int = self._balance_factor(node)
+
+        if bal > 1:
+            assert node.left is not None
+
+            if val < node.left.val:
+                return self._right_rotate(node)
+            else:
+                node.left = self._left_rotate(node.left)
+                return self._right_rotate(node)
+
+        elif bal < -1:
+            assert node.right is not None
+
+            if val > node.right.val:
+                return self._left_rotate(node)
+            else:
+                node.right = self._right_rotate(node.right)
+                return self._left_rotate(node)
+
+        return node
+
     def insert(self, val: int) -> None:
         self.root = self._insert_node(val, self.root)
         self._size += 1
@@ -134,14 +183,18 @@ class AVLTree:
     def search(self, val: int) -> bool:
         return self.__contains__(val)
 
-    def delete(self):  #
-        pass
+    def delete(self, val: int) -> None:
+        self.root = self._delete_node(val, self.root)
+        self._size -= 1
 
     def height(self) -> int:
         return self._get_height(self.root)
 
-    def min(self) -> int:
+    def min(self, node: Node | None = None) -> int:
         curr_node = self.root
+
+        if node is not None:
+            curr_node = node
 
         if curr_node is None:
             raise ValueError
@@ -151,8 +204,11 @@ class AVLTree:
 
         return curr_node.val
 
-    def max(self) -> int:
+    def max(self, node: Node | None = None) -> int:
         curr_node = self.root
+
+        if node is not None:
+            curr_node = node
 
         if curr_node is None:
             raise ValueError

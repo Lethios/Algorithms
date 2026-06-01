@@ -8,9 +8,7 @@ def counting_sort(arr: list[int]) -> list[int]:
 
     arr: list[int] = []
     for num in range(len(freq_arr)):
-        while freq_arr[num] > 0:
-            arr.append(num)
-            freq_arr[num] -= 1
+        arr.extend([num] * freq_arr[num])
 
     return arr
 
